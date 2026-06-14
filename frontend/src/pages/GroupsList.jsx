@@ -76,9 +76,12 @@ function GroupsList() {
       </header>
 
       <main className="content">
-        <div className="flex-between mb-2">
+        <div className="flex-between mb-2 flex items-center justify-between">
           <h1>My Groups</h1>
-          <button className="btn btn-primary" onClick={() => setShowModal(true)}>+ New Group</button>
+          <div className="flex gap-2">
+            <Link to="/import" className="btn btn-secondary">Import CSV</Link>
+            <button className="btn btn-primary" onClick={() => setShowModal(true)}>+ New Group</button>
+          </div>
         </div>
 
         <div className="groups-grid">
