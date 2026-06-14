@@ -40,5 +40,16 @@ npm run dev
 
 The app will be accessible at `http://localhost:5173`.
 
+## Deployment
+
+### Backend (Render)
+The backend is configured for 1-click deployment on Render. It includes a fallback `start` script (`npx prisma generate && node src/server.js`) that automatically compiles the Prisma client on Linux and binds to the `PORT` environment variable injected by Render.
+
+### Frontend (Vercel)
+The frontend uses Vite. When deploying to Vercel, simply add the following Environment Variable in your Vercel project settings:
+- `VITE_API_URL` = `https://spreetail-e36a.onrender.com`
+
+This tells the frontend to securely route all API traffic to the production Render backend instead of localhost.
+
 ## AI Usage
 Please see `AI_USAGE.md` for details on how AI was utilized during development.

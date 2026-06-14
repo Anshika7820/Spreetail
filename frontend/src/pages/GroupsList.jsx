@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 
 function GroupsList() {
+  const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://spreetail-e36a.onrender.com';
   const [groups, setGroups] = useState([]);
   const [newGroupName, setNewGroupName] = useState('');
   const [showModal, setShowModal] = useState(false);
@@ -19,7 +20,7 @@ function GroupsList() {
 
   const fetchGroups = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/groups');
+      const response = await fetch(`${API_BASE_URL}/api/groups`);
       const data = await response.json();
       
       // Filter groups to only those where the user is a member
@@ -39,7 +40,7 @@ function GroupsList() {
 
     try {
       // 1. Create group
-      const res = await fetch('http://localhost:3001/api/groups', {
+      const res = await fetch(`${API_BASE_URL}/api/groups`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: newGroupName })
@@ -47,7 +48,7 @@ function GroupsList() {
       const newGroup = await res.json();
 
       // 2. Add current user as member
-      await fetch(`http://localhost:3001/api/groups/${newGroup.id}/members`, {
+      await fetch(`${API_BASE_URL}/api/groups/${newGroup.id}/members`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId: user.id })

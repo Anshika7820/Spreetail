@@ -21,7 +21,8 @@ export default function ImportWizard() {
     formData.append('file', file);
 
     try {
-      const res = await axios.post('http://localhost:3001/api/import/preview', formData);
+      const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://spreetail-e36a.onrender.com';
+      const res = await axios.post(`${API_BASE_URL}/api/import/preview`, formData);
       setPreview(res.data.expenses);
     } catch (error) {
       console.error(error);
@@ -34,7 +35,8 @@ export default function ImportWizard() {
   const handleConfirm = async () => {
     setLoading(true);
     try {
-      await axios.post('http://localhost:3001/api/import/confirm', { expenses: preview });
+      const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://spreetail-e36a.onrender.com';
+      await axios.post(`${API_BASE_URL}/api/import/confirm`, { expenses: preview });
       setImported(true);
     } catch (error) {
       console.error(error);

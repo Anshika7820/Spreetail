@@ -5,6 +5,7 @@ import { Users, DollarSign, ArrowRight, PlusCircle, UserPlus, CreditCard } from 
 import { AuthContext } from '../context/AuthContext';
 
 export default function Dashboard() {
+  const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://spreetail-e36a.onrender.com';
   const { id } = useParams();
   const { user } = useContext(AuthContext);
   const [group, setGroup] = useState(null);
@@ -29,7 +30,7 @@ export default function Dashboard() {
   const fetchGroupDetails = async () => {
     try {
       setLoading(true);
-      const balanceRes = await axios.get(`http://localhost:3001/api/groups/${id}/balances`);
+      const balanceRes = await axios.get(`${API_BASE_URL}/api/groups/${id}/balances`);
       setGroup({
         id: id,
         name: balanceRes.data.groupName,
@@ -55,11 +56,11 @@ export default function Dashboard() {
     
     try {
       // Create user if not exists
-      const resUser = await axios.post('http://localhost:3001/api/auth/login', { name: newMemberName });
+      const resUser = await axios.post(`${API_BASE_URL}/api/auth/login`, { name: newMemberName });
       const newUserId = resUser.data.id;
       
       // Add member
-      await axios.post(`http://localhost:3001/api/groups/${id}/members`, { userId: newUserId });
+      await axios.post(`${API_BASE_URL}/api/groups/${id}/members`, { userId: newUserId });
       
       setNewMemberName('');
       setShowAddMember(false);
@@ -81,7 +82,7 @@ export default function Dashboard() {
         value: expenseForm.splits[mId] || (expenseForm.splitType === 'equal' ? '' : 0)
       }));
 
-      await axios.post('http://localhost:3001/api/expenses', {
+      await axios.post(`${API_BASE_URL}/api/expenses`, {
         groupId: id,
         description: expenseForm.description,
         amount: expenseForm.amount,
@@ -103,7 +104,7 @@ export default function Dashboard() {
     if (!settlementForm.paidToId || !settlementForm.amount) return;
 
     try {
-      await axios.post('http://localhost:3001/api/settlements', {
+      await axios.post(`${API_BASE_URL}/api/settlements`, {
         groupId: id,
         paidById: user.id,
         paidToId: settlementForm.paidToId,

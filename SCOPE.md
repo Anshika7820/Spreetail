@@ -17,6 +17,15 @@ Below is the list of data problems identified in `expenses_export.csv` and how t
 11. **Name Inconsistencies**: Normalized using title case and trimming (e.g. `priya` -> `Priya`).
 12. **Conflicting Split Types (Furniture for common room)**: Split type says "equal" but "split_details" provides shares. Handled by prioritizing the explicit "split_details" and updating the split type to "share".
 
+## Features Implemented
+The application fully implements the requested Minimum Product Requirements:
+1. **Login Module**: Context-based authentication that persists across the app using LocalStorage.
+2. **Group Management**: Users can create distinct groups and seamlessly invite members natively through the UI.
+3. **Manual Expense Management**: The application natively supports `Equal`, `Percentage`, `Shares`, and `Unequal` splits with background balance reconciliation.
+4. **Settlement Tracking**: Dedicated settlement forms map directly to the `Settlement` backend table to safely zero out debts without distorting group expense analytics.
+5. **CSV Import Wizard**: A fully integrated frontend wizard to gracefully handle the messy `expenses_export.csv` as per the core requirement.
+6. **Dynamic Routing**: Configured backend fallback ports and frontend Vite variables for Render/Vercel compatibility.
+
 ## Database Schema
 
 ```prisma
