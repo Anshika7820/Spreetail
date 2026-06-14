@@ -20,7 +20,7 @@ const prisma = new PrismaClient({ adapter });
 
 // Create the Express app (our backend server)
 const app = express();
-const port = 3001;
+const port = process.env.PORT || 3001;
 
 // Allow our frontend to talk to this backend
 app.use(cors());
