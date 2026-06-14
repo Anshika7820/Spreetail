@@ -1,15 +1,22 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const multer = require('multer');
 const { PrismaClient } = require('@prisma/client');
+const { Pool } = require('pg');
+const { PrismaPg } = require('@prisma/adapter-pg');
 
 // Import our route files
+const authRoutes = require('./routes/auth');
 const importRoutes = require('./routes/import');
 const expensesRoutes = require('./routes/expenses');
 const groupsRoutes = require('./routes/groups');
+const settlementsRoutes = require('./routes/settlements');
 
-// Create the database connection
-const prisma = new PrismaClient();
+// Create the database pool and adapter for Prisma 7
+const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+const adapter = new PrismaPg(pool);
+const prisma = new PrismaClient({ adapter });
 
 // Create the Express app (our backend server)
 const app = express();
@@ -30,6 +37,9 @@ app.locals.prisma = prisma;
 
 // --- API Routes (The URLs the frontend will call) ---
 
+// Route for authentication (login)
+app.use('/api/auth', authRoutes);
+
 // Route for handling CSV uploads
 app.use('/api/import', upload.single('file'), importRoutes);
 
@@ -38,6 +48,9 @@ app.use('/api/expenses', expensesRoutes);
 
 // Route for getting groups and their balances
 app.use('/api/groups', groupsRoutes);
+
+// Route for recording manual settlements
+app.use('/api/settlements', settlementsRoutes);
 
 // --- Error Handling ---
 // If anything goes wrong, this catches the error and sends a simple message
